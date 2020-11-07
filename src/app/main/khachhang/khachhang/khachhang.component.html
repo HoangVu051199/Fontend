@@ -4,7 +4,7 @@
         <i class="ace-icon fa fa-home home-icon"></i>
         <a href="#">Trang chủ</a>
       </li>
-      <li class="active">Quản lý loại món</li>
+      <li class="active">Quản lý khách hàng</li>
     </ul>
     <div class="nav-search">
       <p class="pull-right no-margin">
@@ -21,9 +21,9 @@
       <p-panel header="Tìm kiếm" [style]="{'margin-top': '2px'}">
         <form class="form-horizontal">
           <div class="form-group">
-            <label class="col-sm-1 control-label no-padding-right"> Tên loại</label>
+            <label class="col-sm-1 control-label no-padding-right"> Tên khách hàng</label>
             <div class="col-sm-11">
-              <input formControlName="ten_loai"  type="text" placeholder="Tên loại" />
+              <input formControlName="ten_kh"  type="text" placeholder="Tên khách hàng" />
             </div>
           </div>
           <div class="form-group">
@@ -34,18 +34,22 @@
           </div>
         </form> 
       </p-panel>
-      <p-table selectionMode="single" [value]="loaimons" styleClass="p-datatable-gridlines">
+      <p-table selectionMode="single" [value]="khachhangs" styleClass="p-datatable-gridlines">
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 70px; text-align: center;">STT</th>
-            <th style="width: 30%; text-align: left;">Tên loại</th>
+            <th style="width: 30%; text-align: left;">Tên khách hàng</th>
+            <th style="width: 30%; text-align: left;">Địa chỉ</th>
+            <th style="width: 30%; text-align: left;">Số điện thoại</th>
             <th style="width: 30%; text-align: left;">Tác vụ</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item  let-i="rowIndex">
           <tr>
             <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
-            <td>{{ item.ten_loai }}</td>
+            <td>{{ item.ten_kh }}</td>
+            <td>{{ item.dia_chi }}</td>
+            <td>{{ item.sdt }}</td>
             <td class="action-col" >
               <div class="btn-group">
                 <button title="" class="btn btn-xs btn-white btn-default"  (click)="openUpdateModal(item)">  
@@ -67,7 +71,7 @@
     <!-- /.col -->
   </div>
   <!-- /.row -->
-  <div *ngIf="showUpdateModal" id="createLoaimonModal" class="modal fade" role="dialog">
+  <div *ngIf="showUpdateModal" id="createKhachhangModal" class="modal fade" role="dialog">
       <div class="modal-dialog modal-lg full-height-modal">
         <div class="modal-content">
           <div class="modal-header">
@@ -77,18 +81,30 @@
           <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
             <div class="modal-body no-padding">
               <div class="form-group">
-              <label class="col-sm-2 control-label no-padding-right"> Mã loại(<span style="color: red;">*</span>)</label>
+              <label class="col-sm-2 control-label no-padding-right"> Mã khách hàng(<span style="color: red;">*</span>)</label>
                 <div class="col-sm-5">
-                  <input type="text" placeholder="Mã loại" formControlName="ma_loai"/>
-                  <div *ngIf="submitted && f.ma_loai.errors" class="invalid-feedback">
-                    <div *ngIf="f.ma_loai.errors.required">Mã loại là bắt buộc</div>
+                  <input type="text" placeholder="Mã khách hàng" formControlName="ma_kh"/>
+                  <div *ngIf="submitted && f.ma_kh.errors" class="invalid-feedback">
+                    <div *ngIf="f.ma_kh.errors.required">Mã khách hàng là bắt buộc</div>
                   </div>
                 </div>
               </div>
               <div class="form-group"> 
-                <label class="col-sm-2 control-label no-padding-right"> Tên loại(<span style="color: red;">*</span>)</label>
+                <label class="col-sm-2 control-label no-padding-right"> Tên khách hàng(<span style="color: red;">*</span>)</label>
                 <div class="col-sm-5">
-                  <input type="text" placeholder="Tên loại" formControlName="ten_loai"/>
+                  <input type="text" placeholder="Tên khách hàng" formControlName="ten_kh"/>
+                </div>
+              </div>
+              <div class="form-group"> 
+                <label class="col-sm-2 control-label no-padding-right"> Địa chỉ(<span style="color: red;">*</span>)</label>
+                <div class="col-sm-5">
+                  <input type="text" placeholder="Địa chỉ" formControlName="dia_chi"/>
+                </div>
+              </div>
+              <div class="form-group"> 
+                <label class="col-sm-2 control-label no-padding-right"> Số điện thoại(<span style="color: red;">*</span>)</label>
+                <div class="col-sm-5">
+                  <input type="text" placeholder="Số điện thoại" formControlName="sdt"/>
                 </div>
               </div>
           </div>

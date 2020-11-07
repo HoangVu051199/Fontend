@@ -8,15 +8,14 @@ import { Validators } from '@angular/forms';
 declare var $: any;
 
 @Component({
-  selector: 'app-monan',
-  templateUrl: './monan.component.html',
-  styleUrls: ['./monan.component.css']
+  selector: 'app-ban',
+  templateUrl: './ban.component.html',
+  styleUrls: ['./ban.component.css']
 })
-export class MonanComponent extends BaseComponent implements OnInit {
+export class BanComponent extends BaseComponent implements OnInit {
 
-  public monans: any;
-  public monan: any;
-  public product:any;
+  public bans: any;
+  public ban: any;
   public totalRecords:any;
   public pageSize = 3;
   public page = 1;
@@ -34,15 +33,15 @@ export class MonanComponent extends BaseComponent implements OnInit {
   
   ngOnInit(): void {
     this.formsearch = this.fb.group({
-      'ten_mon': [''],  
+      'ten_ban': [''],  
     });
    
    this.search();
   }
 
   loadPage(page) { 
-    this._api.post('/api/monan/search',{page: page, pageSize: this.pageSize}).takeUntil(this.unsubscribe).subscribe(res => {
-      this.monans = res.data;
+    this._api.post('/api/ban/search',{page: page, pageSize: this.pageSize}).takeUntil(this.unsubscribe).subscribe(res => {
+      this.bans = res.data;
       this.totalRecords =  res.totalItems;
       this.pageSize = res.pageSize;
       });
@@ -51,8 +50,8 @@ export class MonanComponent extends BaseComponent implements OnInit {
   search() { 
     this.page = 1;
     this.pageSize = 5;
-    this._api.post('/api/monan/search',{page: this.page, pageSize: this.pageSize, ten_mon: this.formsearch.get('ten_mon').value}).takeUntil(this.unsubscribe).subscribe(res => {
-      this.monans = res.data;
+    this._api.post('/api/ban/search',{page: this.page, pageSize: this.pageSize, ten_ban: this.formsearch.get('ten_ban').value}).takeUntil(this.unsubscribe).subscribe(res => {
+      this.bans = res.data;
       this.totalRecords =  res.totalItems;
       this.pageSize = res.pageSize;
       });
@@ -77,12 +76,13 @@ export class MonanComponent extends BaseComponent implements OnInit {
         let tmp = {
            //image_url:data_image,
            //ma_mon:value.ma_mon,
-           ma_loai:value.ma_loai,
-           ten_mon:value.ten_mon,
-           hinh_anh:value.hinh_anh,
-           gia:value.gia          
+           ma_ban:value.ma_ban,
+           ma_dat:value.ma_dat,
+           ma_kv:value.ma_kv,
+           ten_ban:value.ten_ban,
+           so_ghe:value.so_ghe        
           };
-        this._api.post('/api/monan/create-monan',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        this._api.post('/api/ban/create-ban',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Thêm thành công');
           this.search();
           this.closeModal();
@@ -92,13 +92,13 @@ export class MonanComponent extends BaseComponent implements OnInit {
         //let data_image = data == '' ? null : data;
         let tmp = {
            //image_url:data_image,
-           ma_loai:value.ma_loai,
-           ten_mon:value.ten_mon,
-           hinh_anh:value.hinh_anh,
-           gia:value.gia,   
-           ma_mon:this.monan.ma_mon,         
+           ma_dat:value.ma_dat,
+           ma_kv:value.ma_kv,
+           ten_ban:value.ten_ban,
+           so_ghe:value.so_ghe,
+           ma_ban:this.ban.ma_ban,         
           };
-        this._api.post('/api/monan/update-monan',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        this._api.post('/api/ban/update-ban',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Cập nhật thành công');
           this.search();
           this.closeModal();
@@ -107,19 +107,20 @@ export class MonanComponent extends BaseComponent implements OnInit {
    
   } 
   onDelete(row) { 
-    this._api.post('/api/monan/delete-monan',{ma_mon:row.ma_mon}).takeUntil(this.unsubscribe).subscribe(res => {
+    this._api.post('/api/ban/delete-ban',{ma_ban:row.ma_ban}).takeUntil(this.unsubscribe).subscribe(res => {
       alert('Xóa thành công');
       this.search(); 
       });
   }
 
   Reset() {  
-    this.monan = null;
+    this.ban = null;
     this.formdata = this.fb.group({
-        'ma_loai': ['', Validators.required],
-        'ten_mon': ['', Validators.required],
-        'hinh_anh': ['', Validators.required],
-        'gia': ['', Validators.required],
+        'ma_ban': ['', Validators.required],
+        'ma_dat': ['', Validators.required],
+        'ma_kv': ['', Validators.required],
+        'ten_ban': ['', Validators.required],
+        'so_ghe': ['', Validators.required],
     }, {
       //validator: MustMatch('matkhau', 'nhaplaimatkhau')
     }); 
@@ -129,15 +130,15 @@ export class MonanComponent extends BaseComponent implements OnInit {
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = true;
-    this.monan = null;
+    this.ban = null;
     setTimeout(() => {
-      $('#createmonanModal').modal('toggle');
+      $('#createBanModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_mon': ['', Validators.required],
-        'ma_loai': ['', Validators.required],
-        'ten_mon': ['', Validators.required],
-        'hinh_anh': ['', Validators.required],
-        'gia': ['', Validators.required],
+        'ma_ban': ['', Validators.required],
+        'ma_dat': ['', Validators.required],
+        'ma_kv': ['', Validators.required],
+        'ten_ban': ['', Validators.required],
+        'so_ghe': ['', Validators.required],
       }, {
         //validator: MustMatch('matkhau', 'nhaplaimatkhau')
       });
@@ -154,16 +155,16 @@ export class MonanComponent extends BaseComponent implements OnInit {
     this.showUpdateModal = true; 
     this.isCreate = false;
     setTimeout(() => {
-      $('#createmonanModal').modal('toggle');
-      this._api.get('/api/monan/get-by-id/'+ row.ma_mon).takeUntil(this.unsubscribe).subscribe((res:any) => {
-        this.monan = res; 
+      $('#createBanModal').modal('toggle');
+      this._api.get('/api/ban/get-by-id/'+ row.ma_ban).takeUntil(this.unsubscribe).subscribe((res:any) => {
+        this.ban = res; 
         //let ngaysinh = new Date(this.loaimon.ngaysinh);
           this.formdata = this.fb.group({
-            'ma_mon': [this.monan.ma_mon, Validators.required],
-            'ma_loai': [this.monan.ma_loai, Validators.required],
-            'ten_mon': [this.monan.ten_mon, Validators.required],
-            'hinh_anh': [this.monan.hinh_anh, Validators.required],
-            'gia': [this.monan.gia, Validators.required],
+            'ma_ban': [this.ban.ma_ban, Validators.required],
+            'ma_dat': [this.ban.ma_dat, Validators.required],
+            'ma_kv': [this.ban.ma_kv, Validators.required],
+            'ten_ban': [this.ban.ten_ban, Validators.required],
+            'so_ghe': [this.ban.so_ghe, Validators.required],
           }, {
             //validator: MustMatch('matkhau', 'nhaplaimatkhau')
           }); 
@@ -173,7 +174,7 @@ export class MonanComponent extends BaseComponent implements OnInit {
   }
   
   closeModal() {
-    $('#createmonanModal').closest('.modal').modal('hide');
+    $('#createBanModal').closest('.modal').modal('hide');
   }
 }
 

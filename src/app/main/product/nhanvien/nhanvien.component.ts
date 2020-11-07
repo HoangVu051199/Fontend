@@ -8,15 +8,14 @@ import { Validators } from '@angular/forms';
 declare var $: any;
 
 @Component({
-  selector: 'app-monan',
-  templateUrl: './monan.component.html',
-  styleUrls: ['./monan.component.css']
+  selector: 'app-nhanvien',
+  templateUrl: './nhanvien.component.html',
+  styleUrls: ['./nhanvien.component.css']
 })
-export class MonanComponent extends BaseComponent implements OnInit {
+export class NhanvienComponent extends BaseComponent implements OnInit {
 
-  public monans: any;
-  public monan: any;
-  public product:any;
+  public nhanviens: any;
+  public nhanvien: any;
   public totalRecords:any;
   public pageSize = 3;
   public page = 1;
@@ -34,15 +33,15 @@ export class MonanComponent extends BaseComponent implements OnInit {
   
   ngOnInit(): void {
     this.formsearch = this.fb.group({
-      'ten_mon': [''],  
+      'ten_nv': [''],  
     });
    
    this.search();
   }
 
   loadPage(page) { 
-    this._api.post('/api/monan/search',{page: page, pageSize: this.pageSize}).takeUntil(this.unsubscribe).subscribe(res => {
-      this.monans = res.data;
+    this._api.post('/api/nhanvien/search',{page: page, pageSize: this.pageSize}).takeUntil(this.unsubscribe).subscribe(res => {
+      this.nhanviens = res.data;
       this.totalRecords =  res.totalItems;
       this.pageSize = res.pageSize;
       });
@@ -51,8 +50,8 @@ export class MonanComponent extends BaseComponent implements OnInit {
   search() { 
     this.page = 1;
     this.pageSize = 5;
-    this._api.post('/api/monan/search',{page: this.page, pageSize: this.pageSize, ten_mon: this.formsearch.get('ten_mon').value}).takeUntil(this.unsubscribe).subscribe(res => {
-      this.monans = res.data;
+    this._api.post('/api/nhanvien/search',{page: this.page, pageSize: this.pageSize, ten_nv: this.formsearch.get('ten_nv').value}).takeUntil(this.unsubscribe).subscribe(res => {
+      this.nhanviens = res.data;
       this.totalRecords =  res.totalItems;
       this.pageSize = res.pageSize;
       });
@@ -77,12 +76,15 @@ export class MonanComponent extends BaseComponent implements OnInit {
         let tmp = {
            //image_url:data_image,
            //ma_mon:value.ma_mon,
-           ma_loai:value.ma_loai,
-           ten_mon:value.ten_mon,
-           hinh_anh:value.hinh_anh,
-           gia:value.gia          
+           ma_nv:value.ma_nv,
+           ma_cv:value.ma_cv,
+           ten_nv:value.ten_nv,
+           gioi_tinh:value.gioi_tinh,
+           ngay_sinh:value.ngay_sinh,
+           dia_chi:value.dia_chi,
+           sdt:value.sdt          
           };
-        this._api.post('/api/monan/create-monan',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        this._api.post('/api/nhanvien/create-nhanvien',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Thêm thành công');
           this.search();
           this.closeModal();
@@ -92,13 +94,15 @@ export class MonanComponent extends BaseComponent implements OnInit {
         //let data_image = data == '' ? null : data;
         let tmp = {
            //image_url:data_image,
-           ma_loai:value.ma_loai,
-           ten_mon:value.ten_mon,
-           hinh_anh:value.hinh_anh,
-           gia:value.gia,   
-           ma_mon:this.monan.ma_mon,         
+           ma_cv:value.ma_cv,
+           ten_nv:value.ten_nv,
+           gioi_tinh:value.gioi_tinh,
+           ngay_sinh:value.ngay_sinh,
+           dia_chi:value.dia_chi,
+           sdt:value.sdt,   
+           ma_nv:this.nhanvien.ma_nv,         
           };
-        this._api.post('/api/monan/update-monan',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        this._api.post('/api/nhanvien/update-nhanvien',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Cập nhật thành công');
           this.search();
           this.closeModal();
@@ -107,19 +111,21 @@ export class MonanComponent extends BaseComponent implements OnInit {
    
   } 
   onDelete(row) { 
-    this._api.post('/api/monan/delete-monan',{ma_mon:row.ma_mon}).takeUntil(this.unsubscribe).subscribe(res => {
+    this._api.post('/api/nhanvien/delete-nhanvien',{ma_nv:row.ma_nv}).takeUntil(this.unsubscribe).subscribe(res => {
       alert('Xóa thành công');
       this.search(); 
       });
   }
 
   Reset() {  
-    this.monan = null;
+    this.nhanvien = null;
     this.formdata = this.fb.group({
-        'ma_loai': ['', Validators.required],
-        'ten_mon': ['', Validators.required],
-        'hinh_anh': ['', Validators.required],
-        'gia': ['', Validators.required],
+        'ma_cv': ['', Validators.required],
+        'ten_nv': ['', Validators.required],
+        'gioi_tinh': ['', Validators.required],
+        'ngay_sinh': ['', Validators.required],
+        'dia_chi': ['', Validators.required],
+        'sdt': ['', Validators.required],
     }, {
       //validator: MustMatch('matkhau', 'nhaplaimatkhau')
     }); 
@@ -129,15 +135,17 @@ export class MonanComponent extends BaseComponent implements OnInit {
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = true;
-    this.monan = null;
+    this.nhanvien = null;
     setTimeout(() => {
-      $('#createmonanModal').modal('toggle');
+      $('#createNhanvienModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_mon': ['', Validators.required],
-        'ma_loai': ['', Validators.required],
-        'ten_mon': ['', Validators.required],
-        'hinh_anh': ['', Validators.required],
-        'gia': ['', Validators.required],
+        'ma_nv': ['', Validators.required],
+        'ma_cv': ['', Validators.required],
+        'ten_nv': ['', Validators.required],
+        'gioi_tinh': ['', Validators.required],
+        'ngay_sinh': ['', Validators.required],
+        'dia_chi': ['', Validators.required],
+        'sdt': ['', Validators.required],
       }, {
         //validator: MustMatch('matkhau', 'nhaplaimatkhau')
       });
@@ -154,16 +162,18 @@ export class MonanComponent extends BaseComponent implements OnInit {
     this.showUpdateModal = true; 
     this.isCreate = false;
     setTimeout(() => {
-      $('#createmonanModal').modal('toggle');
-      this._api.get('/api/monan/get-by-id/'+ row.ma_mon).takeUntil(this.unsubscribe).subscribe((res:any) => {
-        this.monan = res; 
+      $('#createNhanvienModal').modal('toggle');
+      this._api.get('/api/nhanvien/get-by-id/'+ row.ma_nv).takeUntil(this.unsubscribe).subscribe((res:any) => {
+        this.nhanvien = res; 
         //let ngaysinh = new Date(this.loaimon.ngaysinh);
           this.formdata = this.fb.group({
-            'ma_mon': [this.monan.ma_mon, Validators.required],
-            'ma_loai': [this.monan.ma_loai, Validators.required],
-            'ten_mon': [this.monan.ten_mon, Validators.required],
-            'hinh_anh': [this.monan.hinh_anh, Validators.required],
-            'gia': [this.monan.gia, Validators.required],
+            'ma_nv': [this.nhanvien.ma_nv, Validators.required],
+            'ma_cv': [this.nhanvien.ma_cv, Validators.required],
+            'ten_nv': [this.nhanvien.ten_nv, Validators.required],
+            'gioi_tinh': [this.nhanvien.gioi_tinh, Validators.required],
+            'ngay_sinh': [this.nhanvien.ngay_sinh, Validators.required],
+            'dia_chi': [this.nhanvien.dia_chi, Validators.required],
+            'sdt': [this.nhanvien.sdt, Validators.required],
           }, {
             //validator: MustMatch('matkhau', 'nhaplaimatkhau')
           }); 
@@ -173,7 +183,7 @@ export class MonanComponent extends BaseComponent implements OnInit {
   }
   
   closeModal() {
-    $('#createmonanModal').closest('.modal').modal('hide');
+    $('#createNhanvienModal').closest('.modal').modal('hide');
   }
 }
 

@@ -6,13 +6,13 @@ import { BaseComponent } from '../../../lib/base-component';
 import 'rxjs/add/operator/takeUntil';
 declare var $: any;
 @Component({
-  selector: 'app-loaimon',
-  templateUrl: './loaimon.component.html',
-  styleUrls: ['./loaimon.component.css'],
+  selector: 'app-khuvuc',
+  templateUrl: './khuvuc.component.html',
+  styleUrls: ['./khuvuc.component.css'],
 })
-export class LoaimonComponent extends BaseComponent implements OnInit {
-  public loaimons: any;
-  public loaimon: any;
+export class KhuvucComponent extends BaseComponent implements OnInit {
+  public khuvucs: any;
+  public khuvuc: any;
   public totalRecords:any;
   public pageSize = 3;
   public page = 1;
@@ -30,15 +30,15 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.formsearch = this.fb.group({
-      'ten_loai': [''],    
+      'ten_kv': [''],    
     });
    
    this.search();
   }
 
   loadPage(page) { 
-    this._api.post('/api/loai/search',{page: page, pageSize: this.pageSize}).takeUntil(this.unsubscribe).subscribe(res => {
-      this.loaimons = res.data;
+    this._api.post('/api/khuvuc/search',{page: page, pageSize: this.pageSize}).takeUntil(this.unsubscribe).subscribe(res => {
+      this.khuvucs = res.data;
       this.totalRecords =  res.totalItems;
       this.pageSize = res.pageSize;
       });
@@ -47,8 +47,8 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
   search() { 
     this.page = 1;
     this.pageSize = 5;
-    this._api.post('/api/loai/search',{page: this.page, pageSize: this.pageSize, ten_loai: this.formsearch.get('ten_loai').value}).takeUntil(this.unsubscribe).subscribe(res => {
-      this.loaimons = res.data;
+    this._api.post('/api/khuvuc/search',{page: this.page, pageSize: this.pageSize, ten_kv: this.formsearch.get('ten_kv').value}).takeUntil(this.unsubscribe).subscribe(res => {
+      this.khuvucs = res.data;
       this.totalRecords =  res.totalItems;
       this.pageSize = res.pageSize;
       });
@@ -73,10 +73,10 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
       //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
         //let data_image = data == '' ? null : data;
         let tmp = {
-           ma_loai:value.ma_loai, 
-           ten_loai:value.ten_loai,       
+           ma_kv:value.ma_kv, 
+           ten_kv:value.ten_kv,       
           };
-        this._api.post('/api/loai/create-loai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        this._api.post('/api/khuvuc/create-khuvuc',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Thêm thành công');
           this.search();
           this.closeModal();
@@ -85,10 +85,10 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
       //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
         //let data_image = data == '' ? null : data;
         let tmp = {
-          ten_loai:value.ten_loai,
-           ma_loai:this.loaimon.ma_loai,          
+          ten_kv:value.ten_kv,
+           ma_kv:this.khuvuc.ma_kv,          
           };
-        this._api.post('/api/loai/update-loai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        this._api.post('/api/khuvuc/update-khuvuc',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Cập nhật thành công');
           this.search();
           this.closeModal();
@@ -98,16 +98,16 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
   } 
 
   onDelete(row) { 
-    this._api.post('/api/loai/delete-loai',{ma_loai:row.ma_loai}).takeUntil(this.unsubscribe).subscribe(res => {
+    this._api.post('/api/khuvuc/delete-khuvuc',{ma_kv:row.ma_kv}).takeUntil(this.unsubscribe).subscribe(res => {
       alert('Xóa thành công');
       this.search(); 
       });
   }
 
   Reset() {  
-    this.loaimon = null;
+    this.khuvuc = null;
     this.formdata = this.fb.group({
-      'ten_loai': ['', Validators.required],
+      'ten_kv': ['', Validators.required],
     }, {
       //validator: MustMatch('matkhau', 'nhaplaimatkhau')
     }); 
@@ -117,12 +117,12 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
     this.doneSetupForm = false;
     this.showUpdateModal = true;
     this.isCreate = true;
-    this.loaimon = null;
+    this.khuvuc = null;
     setTimeout(() => {
-      $('#createLoaimonModal').modal('toggle');
+      $('#createKhuvucModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_loai': ['', Validators.required],
-        'ten_loai': ['', Validators.required],
+        'ma_kv': ['', Validators.required],
+        'ten_kv': ['', Validators.required],
       }, {
         //validator: MustMatch('matkhau', 'nhaplaimatkhau')
       });
@@ -138,13 +138,13 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
     this.showUpdateModal = true; 
     this.isCreate = false;
     setTimeout(() => {
-      $('#createLoaimonModal').modal('toggle');
-      this._api.get('/api/loai/get-by-id/'+ row.ma_loai).takeUntil(this.unsubscribe).subscribe((res:any) => {
-        this.loaimon = res; 
+      $('#createKhuvucModal').modal('toggle');
+      this._api.get('/api/khuvuc/get-by-id/'+ row.ma_kv).takeUntil(this.unsubscribe).subscribe((res:any) => {
+        this.khuvuc = res; 
         //let ngaysinh = new Date(this.user.ngaysinh);
           this.formdata = this.fb.group({
-            'ma_loai': [this.loaimon.ma_loai, Validators.required],
-            'ten_loai': [this.loaimon.ten_loai, Validators.required],
+            'ma_kv': [this.khuvuc.ma_kv, Validators.required],
+            'ten_kv': [this.khuvuc.ten_kv, Validators.required],
           }, {
             //validator: MustMatch('matkhau', 'nhaplaimatkhau')
           }); 
@@ -154,6 +154,6 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
   }
 
   closeModal() {
-    $('#createLoaimonModal').closest('.modal').modal('hide');
+    $('#createKhuvucModal').closest('.modal').modal('hide');
   }
 }

@@ -42,7 +42,20 @@ export const mainRoutes: Routes = [
         canActivate: [RoleGuard],
         data: { roles: [Role.Admin, Role.User] },
       },
-      
+      {
+        path: 'khuvuc',
+        loadChildren: () =>
+          import('./khuvuc/khuvuc.module').then((m) => m.KhuvucModule),
+        canActivate: [RoleGuard],
+        data: { roles: [Role.Admin, Role.User] },
+      },
+      {
+        path: 'khachhang',
+        loadChildren: () =>
+          import('./khachhang/khachhang.module').then((m) => m.KhachhangModule),
+        canActivate: [RoleGuard],
+        data: { roles: [Role.Admin, Role.User] },
+      },
     ],
   },
 ];
@@ -51,7 +64,7 @@ export const mainRoutes: Routes = [
     SidebarComponent,
     FooterComponent,
     NavbarComponent,
-    MainComponent
+    MainComponent,
   ],
   imports: [SharedModule, CommonModule, RouterModule.forChild(mainRoutes)],
 })

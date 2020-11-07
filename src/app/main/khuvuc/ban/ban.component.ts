@@ -65,17 +65,15 @@ export class BanComponent extends BaseComponent implements OnInit {
     }
   }
   
+  get f() { return this.formdata.controls; }
+
   onSubmit(value) {
     this.submitted = true;
     if (this.formdata.invalid) {
       return;
     } 
     if(this.isCreate) { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-      //let data_image = data == '' ? null : data;
         let tmp = {
-           //image_url:data_image,
-           //ma_mon:value.ma_mon,
            ma_ban:value.ma_ban,
            ma_dat:value.ma_dat,
            ma_kv:value.ma_kv,
@@ -88,10 +86,7 @@ export class BanComponent extends BaseComponent implements OnInit {
           this.closeModal();
           });
     } else { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
         let tmp = {
-           //image_url:data_image,
            ma_dat:value.ma_dat,
            ma_kv:value.ma_kv,
            ten_ban:value.ten_ban,
@@ -116,7 +111,6 @@ export class BanComponent extends BaseComponent implements OnInit {
   Reset() {  
     this.ban = null;
     this.formdata = this.fb.group({
-        'ma_ban': ['', Validators.required],
         'ma_dat': ['', Validators.required],
         'ma_kv': ['', Validators.required],
         'ten_ban': ['', Validators.required],

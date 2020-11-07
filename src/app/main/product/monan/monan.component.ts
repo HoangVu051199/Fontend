@@ -66,6 +66,8 @@ export class MonanComponent extends BaseComponent implements OnInit {
     }
   }
   
+  get f() { return this.formdata.controls; }
+  
   onSubmit(value) {
     this.submitted = true;
     if (this.formdata.invalid) {

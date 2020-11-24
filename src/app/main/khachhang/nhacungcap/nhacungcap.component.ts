@@ -70,10 +70,7 @@ export class NhacungcapComponent extends BaseComponent implements OnInit {
       return;
     } 
     if(this.isCreate) { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
         let tmp = {
-           ma_ncc:value.ma_ncc, 
            ten_ncc:value.ten_ncc,
            dia_chi:value.dia_chi,
            sdt:value.sdt       
@@ -84,8 +81,6 @@ export class NhacungcapComponent extends BaseComponent implements OnInit {
           this.closeModal();
           });
     } else { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
         let tmp = { 
            ten_ncc:value.ten_ncc,
            dia_chi:value.dia_chi,
@@ -114,8 +109,6 @@ export class NhacungcapComponent extends BaseComponent implements OnInit {
       'ten_ncc': ['', Validators.required],
       'dia_chi': ['', Validators.required],
       'sdt': ['', Validators.required],
-    }, {
-      //validator: MustMatch('matkhau', 'nhaplaimatkhau')
     }); 
   }
 
@@ -127,16 +120,10 @@ export class NhacungcapComponent extends BaseComponent implements OnInit {
     setTimeout(() => {
       $('#createNhacungcapModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_ncc': ['', Validators.required],
         'ten_ncc': ['', Validators.required],
         'dia_chi': ['', Validators.required],
         'sdt': ['', Validators.required],
-      }, {
-        //validator: MustMatch('matkhau', 'nhaplaimatkhau')
       });
-      //this.formdata.get('ngaysinh').setValue(this.today);
-      //this.formdata.get('gioitinh').setValue(this.genders[0].value); 
-      //this.formdata.get('role').setValue(this.roles[0].value);
       this.doneSetupForm = true;
     });
   }
@@ -149,14 +136,11 @@ export class NhacungcapComponent extends BaseComponent implements OnInit {
       $('#createNhacungcapModal').modal('toggle');
       this._api.get('/api/nhacungcap/get-by-id/'+ row.ma_ncc).takeUntil(this.unsubscribe).subscribe((res:any) => {
         this.nhacungcap = res; 
-        //let ngaysinh = new Date(this.user.ngaysinh);
           this.formdata = this.fb.group({
             'ma_ncc': [this.nhacungcap.ma_ncc, Validators.required],
             'ten_ncc': [this.nhacungcap.ten_ncc, Validators.required],
             'dia_chi': [this.nhacungcap.dia_chi, Validators.required],
             'sdt': [this.nhacungcap.sdt, Validators.required],
-          }, {
-            //validator: MustMatch('matkhau', 'nhaplaimatkhau')
           }); 
           this.doneSetupForm = true;
         }); 

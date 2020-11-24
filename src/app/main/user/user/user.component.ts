@@ -5,12 +5,14 @@ import { FormBuilder, Validators} from '@angular/forms';
 import { BaseComponent } from '../../../lib/base-component';
 import 'rxjs/add/operator/takeUntil';
 declare var $: any;
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
 })
 export class UserComponent extends BaseComponent implements OnInit {
+  
   public users: any;
   public user: any;
   public totalRecords:any;
@@ -84,6 +86,7 @@ export class UserComponent extends BaseComponent implements OnInit {
            role:value.role,
            ngaysinh:value.ngaysinh           
           };
+          console.log(tmp);
         this._api.post('/api/users/create-user',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Thêm thành công');
           this.search();
@@ -105,6 +108,7 @@ export class UserComponent extends BaseComponent implements OnInit {
            ngaysinh:value.ngaysinh ,
            user_id:this.user.user_id,          
           };
+          console.log(tmp);
         this._api.post('/api/users/update-user',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Cập nhật thành công');
           this.search();

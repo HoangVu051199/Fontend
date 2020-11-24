@@ -70,10 +70,7 @@ export class KhuvucComponent extends BaseComponent implements OnInit {
       return;
     } 
     if(this.isCreate) { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
         let tmp = {
-           ma_kv:value.ma_kv, 
            ten_kv:value.ten_kv,       
           };
         this._api.post('/api/khuvuc/create-khuvuc',tmp).takeUntil(this.unsubscribe).subscribe(res => {
@@ -82,8 +79,6 @@ export class KhuvucComponent extends BaseComponent implements OnInit {
           this.closeModal();
           });
     } else { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
         let tmp = {
           ten_kv:value.ten_kv,
            ma_kv:this.khuvuc.ma_kv,          
@@ -121,14 +116,8 @@ export class KhuvucComponent extends BaseComponent implements OnInit {
     setTimeout(() => {
       $('#createKhuvucModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_kv': ['', Validators.required],
         'ten_kv': ['', Validators.required],
-      }, {
-        //validator: MustMatch('matkhau', 'nhaplaimatkhau')
       });
-      //this.formdata.get('ngaysinh').setValue(this.today);
-      //this.formdata.get('gioitinh').setValue(this.genders[0].value); 
-      //this.formdata.get('role').setValue(this.roles[0].value);
       this.doneSetupForm = true;
     });
   }
@@ -141,12 +130,9 @@ export class KhuvucComponent extends BaseComponent implements OnInit {
       $('#createKhuvucModal').modal('toggle');
       this._api.get('/api/khuvuc/get-by-id/'+ row.ma_kv).takeUntil(this.unsubscribe).subscribe((res:any) => {
         this.khuvuc = res; 
-        //let ngaysinh = new Date(this.user.ngaysinh);
           this.formdata = this.fb.group({
             'ma_kv': [this.khuvuc.ma_kv, Validators.required],
             'ten_kv': [this.khuvuc.ten_kv, Validators.required],
-          }, {
-            //validator: MustMatch('matkhau', 'nhaplaimatkhau')
           }); 
           this.doneSetupForm = true;
         }); 

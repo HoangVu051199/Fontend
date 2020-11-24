@@ -127,16 +127,10 @@ export class KhachhangComponent extends BaseComponent implements OnInit {
     setTimeout(() => {
       $('#createKhachhangModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_kh': ['', Validators.required],
         'ten_kh': ['', Validators.required],
         'dia_chi': ['', Validators.required],
         'sdt': ['', Validators.required],
-      }, {
-        //validator: MustMatch('matkhau', 'nhaplaimatkhau')
       });
-      //this.formdata.get('ngaysinh').setValue(this.today);
-      //this.formdata.get('gioitinh').setValue(this.genders[0].value); 
-      //this.formdata.get('role').setValue(this.roles[0].value);
       this.doneSetupForm = true;
     });
   }
@@ -149,14 +143,11 @@ export class KhachhangComponent extends BaseComponent implements OnInit {
       $('#createKhachhangModal').modal('toggle');
       this._api.get('/api/khachhang/get-by-id/'+ row.ma_kh).takeUntil(this.unsubscribe).subscribe((res:any) => {
         this.khachhang = res; 
-        //let ngaysinh = new Date(this.user.ngaysinh);
           this.formdata = this.fb.group({
             'ma_kh': [this.khachhang.ma_kh, Validators.required],
             'ten_kh': [this.khachhang.ten_kh, Validators.required],
             'dia_chi': [this.khachhang.dia_chi, Validators.required],
             'sdt': [this.khachhang.sdt, Validators.required],
-          }, {
-            //validator: MustMatch('matkhau', 'nhaplaimatkhau')
           }); 
           this.doneSetupForm = true;
         }); 

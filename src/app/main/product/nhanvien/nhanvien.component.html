@@ -84,15 +84,6 @@
           <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
             <div class="modal-body no-padding">
               <div class="form-group">
-              <label class="col-sm-2 control-label no-padding-right"> Mã nhân viên(<span style="color: red;">*</span>)</label>
-                <div class="col-sm-5">
-                  <input type="text" placeholder="Mã nhân viên" formControlName="ma_nv"/>
-                  <div *ngIf="submitted && f.ma_nv.errors" class="invalid-feedback">
-                    <div *ngIf="f.ma_nv.errors.required">Mã nhân viên là bắt buộc</div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
                 <label class="col-sm-2 control-label no-padding-right"> Mã chức vụ</label>
                 <div class="col-sm-5">
                   <input type="text" formControlName="ma_cv" placeholder="Mã chức vụ" />

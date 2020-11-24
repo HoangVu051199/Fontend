@@ -74,11 +74,10 @@ export class BanComponent extends BaseComponent implements OnInit {
     } 
     if(this.isCreate) { 
         let tmp = {
-           ma_ban:value.ma_ban,
-           ma_dat:value.ma_dat,
            ma_kv:value.ma_kv,
            ten_ban:value.ten_ban,
-           so_ghe:value.so_ghe        
+           so_ghe:value.so_ghe,
+           trang_thai:value.trang_thai            
           };
         this._api.post('/api/ban/create-ban',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Thêm thành công');
@@ -87,10 +86,10 @@ export class BanComponent extends BaseComponent implements OnInit {
           });
     } else { 
         let tmp = {
-           ma_dat:value.ma_dat,
            ma_kv:value.ma_kv,
            ten_ban:value.ten_ban,
            so_ghe:value.so_ghe,
+           trang_thai:value.trang_thai,
            ma_ban:this.ban.ma_ban,         
           };
         this._api.post('/api/ban/update-ban',tmp).takeUntil(this.unsubscribe).subscribe(res => {
@@ -115,8 +114,6 @@ export class BanComponent extends BaseComponent implements OnInit {
         'ma_kv': ['', Validators.required],
         'ten_ban': ['', Validators.required],
         'so_ghe': ['', Validators.required],
-    }, {
-      //validator: MustMatch('matkhau', 'nhaplaimatkhau')
     }); 
   }
 
@@ -128,20 +125,13 @@ export class BanComponent extends BaseComponent implements OnInit {
     setTimeout(() => {
       $('#createBanModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_ban': ['', Validators.required],
-        'ma_dat': ['', Validators.required],
         'ma_kv': ['', Validators.required],
         'ten_ban': ['', Validators.required],
         'so_ghe': ['', Validators.required],
-      }, {
-        //validator: MustMatch('matkhau', 'nhaplaimatkhau')
+        'trang_thai': ['', Validators.required],
       });
-      // this.formdata.get('ngaysinh').setValue(this.today);
-      // this.formdata.get('gioitinh').setValue(this.genders[0].value); 
-      // this.formdata.get('role').setValue(this.roles[0].value);
       this.doneSetupForm = true;
     });
-    
   }
 
   public openUpdateModal(row) {
@@ -152,15 +142,11 @@ export class BanComponent extends BaseComponent implements OnInit {
       $('#createBanModal').modal('toggle');
       this._api.get('/api/ban/get-by-id/'+ row.ma_ban).takeUntil(this.unsubscribe).subscribe((res:any) => {
         this.ban = res; 
-        //let ngaysinh = new Date(this.loaimon.ngaysinh);
           this.formdata = this.fb.group({
-            'ma_ban': [this.ban.ma_ban, Validators.required],
-            'ma_dat': [this.ban.ma_dat, Validators.required],
             'ma_kv': [this.ban.ma_kv, Validators.required],
             'ten_ban': [this.ban.ten_ban, Validators.required],
             'so_ghe': [this.ban.so_ghe, Validators.required],
-          }, {
-            //validator: MustMatch('matkhau', 'nhaplaimatkhau')
+            'trang_thai': [this.ban.trang_thai, Validators.required]
           }); 
           this.doneSetupForm = true;
         }); 

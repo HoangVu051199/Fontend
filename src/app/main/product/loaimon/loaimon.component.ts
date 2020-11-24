@@ -70,10 +70,7 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
       return;
     } 
     if(this.isCreate) { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
         let tmp = {
-           ma_loai:value.ma_loai, 
            ten_loai:value.ten_loai,       
           };
         this._api.post('/api/loai/create-loai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
@@ -82,8 +79,6 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
           this.closeModal();
           });
     } else { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
         let tmp = {
           ten_loai:value.ten_loai,
            ma_loai:this.loaimon.ma_loai,          
@@ -108,8 +103,6 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
     this.loaimon = null;
     this.formdata = this.fb.group({
       'ten_loai': ['', Validators.required],
-    }, {
-      //validator: MustMatch('matkhau', 'nhaplaimatkhau')
     }); 
   }
 
@@ -121,14 +114,8 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
     setTimeout(() => {
       $('#createLoaimonModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_loai': ['', Validators.required],
         'ten_loai': ['', Validators.required],
-      }, {
-        //validator: MustMatch('matkhau', 'nhaplaimatkhau')
       });
-      //this.formdata.get('ngaysinh').setValue(this.today);
-      //this.formdata.get('gioitinh').setValue(this.genders[0].value); 
-      //this.formdata.get('role').setValue(this.roles[0].value);
       this.doneSetupForm = true;
     });
   }
@@ -141,12 +128,8 @@ export class LoaimonComponent extends BaseComponent implements OnInit {
       $('#createLoaimonModal').modal('toggle');
       this._api.get('/api/loai/get-by-id/'+ row.ma_loai).takeUntil(this.unsubscribe).subscribe((res:any) => {
         this.loaimon = res; 
-        //let ngaysinh = new Date(this.user.ngaysinh);
           this.formdata = this.fb.group({
-            'ma_loai': [this.loaimon.ma_loai, Validators.required],
             'ten_loai': [this.loaimon.ten_loai, Validators.required],
-          }, {
-            //validator: MustMatch('matkhau', 'nhaplaimatkhau')
           }); 
           this.doneSetupForm = true;
         }); 

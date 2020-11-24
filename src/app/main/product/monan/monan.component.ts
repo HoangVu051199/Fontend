@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ApiService } from 'src/app/lib/api.service';
+import { MustMatch } from '../../../helpers/must-match.validator';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { FileUpload } from 'primeng/fileupload';
+import { FormBuilder,  Validators } from '@angular/forms';
+//import { ApiService } from 'src/app/lib/api.service';
 import { BaseComponent } from '../../../lib/base-component';
 import 'rxjs/add/operator/takeUntil';
-import { Injector } from '@angular/core';
-import { Validators } from '@angular/forms';
 declare var $: any;
 
 @Component({
@@ -16,7 +16,7 @@ export class MonanComponent extends BaseComponent implements OnInit {
 
   public monans: any;
   public monan: any;
-  public product:any;
+  public loaimon: any;
   public totalRecords:any;
   public pageSize = 3;
   public page = 1;
@@ -27,8 +27,8 @@ export class MonanComponent extends BaseComponent implements OnInit {
   public showUpdateModal:any;
   public isCreate:any;
   submitted = false;
-  //@ViewChild(FileUpload, { static: false }) file_image: FileUpload;
-  constructor(private fb: FormBuilder, injector: Injector, private service:ApiService) {
+  @ViewChild(FileUpload, { static: false }) file_image: FileUpload;
+  constructor(private fb: FormBuilder, injector: Injector) {
     super(injector);
   }
   
@@ -36,8 +36,9 @@ export class MonanComponent extends BaseComponent implements OnInit {
     this.formsearch = this.fb.group({
       'ten_mon': [''],  
     });
-   
+    
    this.search();
+   this.getcat();
   }
 
   loadPage(page) { 
@@ -74,14 +75,12 @@ export class MonanComponent extends BaseComponent implements OnInit {
       return;
     } 
     if(this.isCreate) { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-      //let data_image = data == '' ? null : data;
+      this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
+        let data_image = data == '' ? null : data;
         let tmp = {
-           //image_url:data_image,
-           //ma_mon:value.ma_mon,
+           hinh_anh:data_image,
            ma_loai:value.ma_loai,
            ten_mon:value.ten_mon,
-           hinh_anh:value.hinh_anh,
            gia:value.gia          
           };
         this._api.post('/api/monan/create-monan',tmp).takeUntil(this.unsubscribe).subscribe(res => {
@@ -89,14 +88,14 @@ export class MonanComponent extends BaseComponent implements OnInit {
           this.search();
           this.closeModal();
           });
+        });
     } else { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
+      this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
+        let data_image = data == '' ? null : data;
         let tmp = {
-           //image_url:data_image,
+           hinh_anh:data_image,
            ma_loai:value.ma_loai,
            ten_mon:value.ten_mon,
-           hinh_anh:value.hinh_anh,
            gia:value.gia,   
            ma_mon:this.monan.ma_mon,         
           };
@@ -105,13 +104,20 @@ export class MonanComponent extends BaseComponent implements OnInit {
           this.search();
           this.closeModal();
           }); 
+        });
     }
-   
   } 
   onDelete(row) { 
+    console.log(this._api);
     this._api.post('/api/monan/delete-monan',{ma_mon:row.ma_mon}).takeUntil(this.unsubscribe).subscribe(res => {
       alert('Xóa thành công');
       this.search(); 
+      });
+  }
+  
+  getcat() {
+    this._api.get('/api/loai/get-all').takeUntil(this.unsubscribe).subscribe(res => {
+      this.loaimon = res;
       });
   }
 
@@ -122,8 +128,6 @@ export class MonanComponent extends BaseComponent implements OnInit {
         'ten_mon': ['', Validators.required],
         'hinh_anh': ['', Validators.required],
         'gia': ['', Validators.required],
-    }, {
-      //validator: MustMatch('matkhau', 'nhaplaimatkhau')
     }); 
   }
 
@@ -135,17 +139,10 @@ export class MonanComponent extends BaseComponent implements OnInit {
     setTimeout(() => {
       $('#createmonanModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_mon': ['', Validators.required],
         'ma_loai': ['', Validators.required],
         'ten_mon': ['', Validators.required],
-        'hinh_anh': ['', Validators.required],
         'gia': ['', Validators.required],
-      }, {
-        //validator: MustMatch('matkhau', 'nhaplaimatkhau')
       });
-      // this.formdata.get('ngaysinh').setValue(this.today);
-      // this.formdata.get('gioitinh').setValue(this.genders[0].value); 
-      // this.formdata.get('role').setValue(this.roles[0].value);
       this.doneSetupForm = true;
     });
     
@@ -159,15 +156,10 @@ export class MonanComponent extends BaseComponent implements OnInit {
       $('#createmonanModal').modal('toggle');
       this._api.get('/api/monan/get-by-id/'+ row.ma_mon).takeUntil(this.unsubscribe).subscribe((res:any) => {
         this.monan = res; 
-        //let ngaysinh = new Date(this.loaimon.ngaysinh);
           this.formdata = this.fb.group({
-            'ma_mon': [this.monan.ma_mon, Validators.required],
             'ma_loai': [this.monan.ma_loai, Validators.required],
             'ten_mon': [this.monan.ten_mon, Validators.required],
-            'hinh_anh': [this.monan.hinh_anh, Validators.required],
             'gia': [this.monan.gia, Validators.required],
-          }, {
-            //validator: MustMatch('matkhau', 'nhaplaimatkhau')
           }); 
           this.doneSetupForm = true;
         }); 

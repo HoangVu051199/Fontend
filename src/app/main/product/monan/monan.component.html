@@ -40,6 +40,7 @@
         <tr>
           <th style="width: 70px; text-align: center;">STT</th>
           <th style="width: 30%; text-align: left;">Tên món</th>
+          <!-- <th style="width: 30%; text-align: left;">Tên loại</th> -->
           <th style="width: 30%; text-align: left;">Hình ảnh</th>
           <th style="width: 30%; text-align: left;">Giá</th>
           <th style="width: 30%; text-align: left;">Tác vụ</th>
@@ -49,6 +50,7 @@
         <tr>
           <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
           <td>{{ item.ten_mon }}</td>
+          <!-- <td>{{ item.ten_loai }}</td> -->
           <td>{{ item.hinh_anh }}</td>
           <td>{{ item.gia }}</td>
           <td class="action-col" >
@@ -82,18 +84,11 @@
         <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
           <div class="modal-body no-padding">
             <div class="form-group">
-            <label class="col-sm-2 control-label no-padding-right"> Mã món(<span style="color: red;">*</span>)</label>
+              <label class="col-sm-2 control-label no-padding-right">Tên Loại</label>
               <div class="col-sm-5">
-                <input type="text" placeholder="Mã món" formControlName="ma_mon"/>
-                <div *ngIf="submitted && f.ma_mon.errors" class="invalid-feedback">
-                  <div *ngIf="f.ma_mon.errors.required">Mã món là bắt buộc</div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2 control-label no-padding-right"> Mã loại</label>
-              <div class="col-sm-5">
-                <input type="text" formControlName="ma_loai" placeholder="Mã loại" />
+                <select class="form-control" formControlName="ma_loai">
+                  <option *ngFor="let item of loaimon" value="{{item.ma_loai}}" [style]="{'width':'100%'}">{{item.ten_loai}}</option>
+              </select>
               </div>
             </div>
             <div class="form-group">
@@ -103,9 +98,13 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-2 control-label no-padding-right"> Hình ảnh</label>
-              <div class="col-sm-5">
-                <input type="text" formControlName="hinh_anh" placeholder="Hình ảnh" />
+              <label class="col-sm-2 control-label no-padding-right"> Ảnh đại diện</label>
+              <div class="col-sm-10">
+                <p-fileUpload #file_image mode="advanced" [showUploadButton]="false" cancelLabel="Hủy" chooseLabel ="Chọn ảnh"   multiple="false" accept="image/*" maxFileSize="1000000">
+                    <ng-template pTemplate="content">
+                        <img *ngIf="monan && monan.hinh_anh" style="height: 100px;width: 100px;" [src]="monan.hinh_anh">
+                    </ng-template>
+                </p-fileUpload>
               </div>
             </div>
             <div class="form-group">
@@ -114,16 +113,6 @@
                 <input type="text" formControlName="gia" placeholder="Giá" />
               </div>
             </div>
-            <!-- <div class="form-group">
-              <label class="col-sm-2 control-label no-padding-right"> Hình ảnh</label>
-              <div class="col-sm-10">
-                <p-fileUpload #file_image mode="advanced" [showUploadButton]="false" cancelLabel="Hủy" chooseLabel ="Chọn ảnh"   multiple="false" accept="image/*" maxFileSize="1000000">
-                    <ng-template pTemplate="content">
-                        <img *ngIf="user && user.image_url" style="height: 100px;width: 100px;" [src]="user.image_url">
-                    </ng-template>
-              </p-fileUpload>
-              </div>
-            </div> -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default btn-sm" (click)="Reset()">

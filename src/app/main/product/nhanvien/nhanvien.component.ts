@@ -64,7 +64,7 @@ export class NhanvienComponent extends BaseComponent implements OnInit {
         return {matkhau: true};
     }
   }
-  
+
   get f() { return this.formdata.controls; }
 
   onSubmit(value) {
@@ -73,12 +73,7 @@ export class NhanvienComponent extends BaseComponent implements OnInit {
       return;
     } 
     if(this.isCreate) { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-      //let data_image = data == '' ? null : data;
         let tmp = {
-           //image_url:data_image,
-           //ma_mon:value.ma_mon,
-           ma_nv:value.ma_nv,
            ma_cv:value.ma_cv,
            ten_nv:value.ten_nv,
            gioi_tinh:value.gioi_tinh,
@@ -92,10 +87,7 @@ export class NhanvienComponent extends BaseComponent implements OnInit {
           this.closeModal();
           });
     } else { 
-      //this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        //let data_image = data == '' ? null : data;
         let tmp = {
-           //image_url:data_image,
            ma_cv:value.ma_cv,
            ten_nv:value.ten_nv,
            gioi_tinh:value.gioi_tinh,
@@ -141,7 +133,6 @@ export class NhanvienComponent extends BaseComponent implements OnInit {
     setTimeout(() => {
       $('#createNhanvienModal').modal('toggle');
       this.formdata = this.fb.group({
-        'ma_nv': ['', Validators.required],
         'ma_cv': ['', Validators.required],
         'ten_nv': ['', Validators.required],
         'gioi_tinh': ['', Validators.required],

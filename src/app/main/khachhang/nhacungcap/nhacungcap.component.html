@@ -80,15 +80,6 @@
           </div>
           <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
             <div class="modal-body no-padding">
-              <div class="form-group">
-              <label class="col-sm-2 control-label no-padding-right"> Mã nhà cung cấp(<span style="color: red;">*</span>)</label>
-                <div class="col-sm-5">
-                  <input type="text" placeholder="Mã nhà cung cấp" formControlName="ma_ncc"/>
-                  <div *ngIf="submitted && f.ma_ncc.errors" class="invalid-feedback">
-                    <div *ngIf="f.ma_ncc.errors.required">Mã nhà cung cấp là bắt buộc</div>
-                  </div>
-                </div>
-              </div>
               <div class="form-group"> 
                 <label class="col-sm-2 control-label no-padding-right"> Tên nhà cung cấp(<span style="color: red;">*</span>)</label>
                 <div class="col-sm-5">
